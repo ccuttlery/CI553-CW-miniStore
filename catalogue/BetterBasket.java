@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 
 /**
- * Write a description of class BetterBasket here.
+ * Write a description of class BetterBasket here
  * 
  * @author  Charlie Cuttler
  * @version 1.0
