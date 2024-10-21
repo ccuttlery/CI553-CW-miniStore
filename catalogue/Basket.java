@@ -2,6 +2,7 @@ package catalogue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.Formatter;
 import java.util.Locale;
@@ -16,7 +17,7 @@ import java.util.Locale;
 public class Basket extends ArrayList<Product> implements Serializable
 {
   private static final long serialVersionUID = 1;
-  private int    theOrderNum = 0;          // Order number
+  protected int    theOrderNum = 0;          // Order number
   
   /**
    * Constructor for a basket which is
@@ -50,18 +51,29 @@ public class Basket extends ArrayList<Product> implements Serializable
    * Add a product to the Basket.
    * Product is appended to the end of the existing products
    * in the basket.
-   * @param pr A product to be added to the basket
+   * If a product of the same type already exists in the Basket, its quantity will be updated instead.
+   * @param newProduct A product to be added to the basket
    * @return true if successfully adds the product
    */
   // Will be in the Java doc for Basket
   @Override
-  public boolean add( Product pr )
-  {                              
-    return super.add( pr );     // Call add in ArrayList
+  public boolean add(Product newProduct)
+  {     
+	for (Product product : this) {
+		if (product.getProductNum().equals(newProduct.getProductNum())) {
+			product.setQuantity(product.getQuantity()+newProduct.getQuantity());
+			return true;
+		}
+	}
+	
+    return super.add(newProduct);     // Call add in ArrayList
   }
+  
+  
 
   /**
    * Returns a description of the products in the basket suitable for printing.
+   * Also sorts the products by their product number.
    * @return a string description of the basket products
    */
   public String getDetails()
@@ -73,6 +85,8 @@ public class Basket extends ArrayList<Product> implements Serializable
     double total = 0.00;
     if ( theOrderNum != 0 )
       fr.format( "Order number: %03d\n", theOrderNum );
+    
+    Collections.sort(this);
       
     if ( this.size() > 0 )
     {
