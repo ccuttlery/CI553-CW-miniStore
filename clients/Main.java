@@ -14,8 +14,11 @@ import clients.packing.PackingModel;
 import clients.packing.PackingView;
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
+import style.ColorManager;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Starts all the clients (user interface)  as a single application.
@@ -27,7 +30,7 @@ import java.awt.*;
  */
 
 class Main
-{
+{		
   public static void main (String args[])
   {
     new Main().begin();
@@ -56,6 +59,7 @@ class Main
     JFrame  window = new JFrame();
     window.setTitle( "Customer Client MVC");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    ColorManager.getInstance().initialiseWindow(window);
     Dimension pos = PosOnScrn.getPos();
     
     CustomerModel model      = new CustomerModel(mlf);
@@ -76,6 +80,7 @@ class Main
     JFrame  window = new JFrame();
     window.setTitle( "Cashier Client MVC");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    ColorManager.getInstance().initialiseWindow(window);
     Dimension pos = PosOnScrn.getPos();
     
     CashierModel model      = new CashierModel(mlf);
@@ -99,6 +104,7 @@ class Main
 
     window.setTitle( "Packing Client MVC");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    ColorManager.getInstance().initialiseWindow(window);
     Dimension pos = PosOnScrn.getPos();
     
     PackingModel model      = new PackingModel(mlf);
@@ -120,6 +126,7 @@ class Main
 
     window.setTitle( "BackDoor Client MVC");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    ColorManager.getInstance().initialiseWindow(window);
     Dimension pos = PosOnScrn.getPos();
     
     BackDoorModel model      = new BackDoorModel(mlf);
@@ -130,5 +137,4 @@ class Main
     model.addObserver( view );       // Add observer to the model
     window.setVisible(true);         // Make window visible
   }
-  
 }

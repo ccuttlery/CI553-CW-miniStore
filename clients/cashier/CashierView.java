@@ -4,6 +4,7 @@ import catalogue.Basket;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
+import style.ColorManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,16 +70,19 @@ public class CashierView implements Observer
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
+    ColorManager.getInstance().initialiseButton(theBtCheck);
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
     theBtBuy.addActionListener(                     // Call back code
       e -> cont.doBuy() );
+    ColorManager.getInstance().initialiseButton(theBtBuy);
     cp.add( theBtBuy );                             //  Add to canvas
 
     theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
     theBtBought.addActionListener(                  // Call back code
       e -> cont.doBought() );
+    ColorManager.getInstance().initialiseButton(theBtBought);
     cp.add( theBtBought );                          //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area

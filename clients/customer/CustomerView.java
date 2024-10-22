@@ -5,6 +5,7 @@ import catalogue.BetterBasket;
 import clients.Picture;
 import middle.MiddleFactory;
 import middle.StockReader;
+import style.ColorManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +34,7 @@ public class CustomerView implements Observer
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtCheck = new JButton( Name.CHECK );
   private final JButton     theBtClear = new JButton( Name.CLEAR );
+  private final JButton     theBtColorMode = new JButton("Mode");
 
   private Picture thePicture = new Picture(80,80);
   private StockReader theStock   = null;
@@ -70,12 +72,20 @@ public class CustomerView implements Observer
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
     theBtCheck.addActionListener(                   // Call back code
       e -> cont.doCheck( theInput.getText() ) );
+    ColorManager.getInstance().initialiseButton(theBtCheck);
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
+    ColorManager.getInstance().initialiseButton(theBtClear);
     cp.add( theBtClear );                           //  Add to canvas
+    
+    theBtColorMode.setBounds( 16, 25+60*3, 80, 40 );   // Bought Button
+    theBtColorMode.addActionListener(                  // Call back code
+      e -> ColorManager.getInstance().ToggleMode() );
+    ColorManager.getInstance().initialiseButton(theBtColorMode);
+    cp.add( theBtColorMode );                          //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( " " );                       // blank

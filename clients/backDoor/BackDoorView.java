@@ -2,6 +2,7 @@ package clients.backDoor;
 
 import middle.MiddleFactory;
 import middle.StockReadWriter;
+import style.ColorManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,17 +66,20 @@ public class BackDoorView implements Observer
     theBtQuery.setBounds( 16, 25+60*0, 80, 40 );    // Buy button 
     theBtQuery.addActionListener(                   // Call back code
       e -> cont.doQuery( theInput.getText() ) );
+    ColorManager.getInstance().initialiseButton(theBtQuery);
     cp.add( theBtQuery );                           //  Add to canvas
 
     theBtRStock.setBounds( 16, 25+60*1, 80, 40 );   // Check Button
     theBtRStock.addActionListener(                  // Call back code
       e -> cont.doRStock( theInput.getText(),
                           theInputNo.getText() ) );
+    ColorManager.getInstance().initialiseButton(theBtRStock);
     cp.add( theBtRStock );                          //  Add to canvas
 
     theBtClear.setBounds( 16, 25+60*2, 80, 40 );    // Buy button 
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
+    ColorManager.getInstance().initialiseButton(theBtClear);
     cp.add( theBtClear );                           //  Add to canvas
 
  
