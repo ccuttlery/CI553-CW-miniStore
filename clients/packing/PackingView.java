@@ -57,7 +57,8 @@ public class PackingView implements Observer
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
     
     pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Packing Bought Order" );                        
+    pageTitle.setText( "Packing Bought Order" );    
+    ColorManager.getInstance().initialiseLabel(pageTitle);
     cp.add( pageTitle );
 
     theBtPack.setBounds( 16, 25+60*0, 80, 40 );   // Check Button
@@ -68,11 +69,13 @@ public class PackingView implements Observer
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( "" );                        // Blank
+    ColorManager.getInstance().initialiseLabel(theAction);
     cp.add( theAction );                            //  Add to canvas
 
     theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
+    ColorManager.getInstance().initialiseTextArea(theOutput);
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible

@@ -66,7 +66,8 @@ public class CustomerView implements Observer
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
     
     pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Search products" );                        
+    pageTitle.setText( "Search products" );
+    ColorManager.getInstance().initialiseLabel(pageTitle);
     cp.add( pageTitle );
 
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
@@ -89,21 +90,25 @@ public class CustomerView implements Observer
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( " " );                       // blank
+    ColorManager.getInstance().initialiseLabel(theAction);
     cp.add( theAction );                            //  Add to canvas
 
     theInput.setBounds( 110, 50, 270, 40 );         // Product no area
     theInput.setText("");                           // Blank
+    ColorManager.getInstance().initialiseTextField(theInput);
     cp.add( theInput );                             //  Add to canvas
     
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
+    ColorManager.getInstance().initialiseTextArea(theOutput);
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
 
     thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
     cp.add( thePicture );                           //  Add to canvas
     thePicture.clear();
+    thePicture.setVisible(false);
     
     rootWindow.setVisible( true );                  // Make visible);
     theInput.requestFocus();                        // Focus is here
@@ -134,8 +139,10 @@ public class CustomerView implements Observer
     if ( image == null )
     {
       thePicture.clear();                  // Clear picture
+      thePicture.setVisible(false);
     } else {
       thePicture.set( image );             // Display picture
+      thePicture.setVisible(true);
     }
     theOutput.setText( model.getBasket().getDetails() );
     theInput.requestFocus();               // Focus is here

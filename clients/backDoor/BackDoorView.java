@@ -60,7 +60,8 @@ public class BackDoorView implements Observer
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
     pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Staff check and manage stock" );                        
+    pageTitle.setText( "Staff check and manage stock" );              
+    ColorManager.getInstance().initialiseLabel(pageTitle);
     cp.add( pageTitle );
     
     theBtQuery.setBounds( 16, 25+60*0, 80, 40 );    // Buy button 
@@ -85,19 +86,23 @@ public class BackDoorView implements Observer
  
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
     theAction.setText( "" );                        // Blank
+    ColorManager.getInstance().initialiseLabel(theAction);
     cp.add( theAction );                            //  Add to canvas
 
     theInput.setBounds( 110, 50, 120, 40 );         // Input Area
     theInput.setText("");                           // Blank
+    ColorManager.getInstance().initialiseTextField(theInput);
     cp.add( theInput );                             //  Add to canvas
     
     theInputNo.setBounds( 260, 50, 120, 40 );       // Input Area
     theInputNo.setText("0");                        // 0
+    ColorManager.getInstance().initialiseTextField(theInputNo);
     cp.add( theInputNo );                           //  Add to canvas
 
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
     theOutput.setFont( f );                         //  Uses font  
+    ColorManager.getInstance().initialiseTextArea(theOutput);
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
     rootWindow.setVisible( true );                  // Make visible
