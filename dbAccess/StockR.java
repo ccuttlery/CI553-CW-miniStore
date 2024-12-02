@@ -14,6 +14,8 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -139,6 +141,64 @@ public class StockR implements StockReader
     {
       throw new StockException( "SQL getDetails: " + e.getMessage() );
     }
+  }
+  
+  
+  /**
+   * Returns details about the product in the stock list based on its name rather than stock number.
+   *  Assumed to exist in database.
+   *  Uses Levenshtein distance to determine closest search term.
+   * @param name The product's name or close search term
+   * @return Details in an instance of a Product
+   */
+  public synchronized Product getDetailsFromName(String name) throws StockException
+  {
+	  try
+	  {
+		  Product   dt = new Product( "0", "", 0.00, 0 );
+	      ResultSet rs = getStatementObject().executeQuery(
+	        "select ProductTable.description, ProductTable.price, StockTable.stockLevel " +
+	        "  from ProductTable, StockTable"
+	      );
+
+	      Dictionary<String, String> dict = new Hashtable<>();
+	      while (rs.next())
+	      {
+	    	  dict.put(rs.getString("description"), rs.getString("productNo"));
+	      }
+	      
+	      
+	      rs.close();
+	      return dt;
+	  }
+	  catch ( SQLException e )
+	  {
+	    	throw new StockException( "SQL getDetails: " + e.getMessage());
+	    	}
+  }
+  
+  /**
+   * Calculates the Levenshtein distance between two strings.
+   * @param a
+   * @param b
+   * @return The distance between strings a and b
+   */
+  private int calculateDistance(String a, String b)
+  {
+	  String aTail = a.substring(1, a.length());
+	  String bTail = b.substring(1, b.length());
+	  
+	  
+	  if (b.length() == 0)
+		  return a.length();
+	  
+	  if (a.length() == 0)
+		  return b.length();
+	  
+	  if (a.charAt(0) == (b.charAt(0)))
+		  return this.calculateDistance(aTail, bTail);
+	  
+	  return 1 + Math.min(Math.min(this.calculateDistance(aTail, b), this.calculateDistance(a, bTail)), this.calculateDistance(aTail, bTail));
   }
 
   /**

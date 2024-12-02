@@ -22,7 +22,12 @@ public class ColorManager {
 	}
 	
 	
-	private ColorMode mode = ColorMode.LIGHT;
+	private enum Mode {
+		LIGHT,
+		DARK
+	}
+
+	private Mode mode = Mode.LIGHT;
 	
 	
 	class LightColors {
@@ -45,10 +50,10 @@ public class ColorManager {
 	
 
 	private ArrayList<JFrame> windows = new ArrayList<JFrame>();
-	private ArrayList<JButton> buttons = new ArrayList<JButton>();
-	private ArrayList<JLabel> labels = new ArrayList<JLabel>();
-	private ArrayList<JTextField> textFields = new ArrayList<JTextField>();
-	private ArrayList<JTextArea> textAreas = new ArrayList<JTextArea>();
+	private ArrayList<JComponent> buttons = new ArrayList<JComponent>();
+	private ArrayList<JComponent> labels = new ArrayList<JComponent>();
+	private ArrayList<JComponent> textFields = new ArrayList<JComponent>();
+	private ArrayList<JComponent> textAreas = new ArrayList<JComponent>();
 
 	
 	public void initialiseWindow(JFrame window) {
@@ -83,8 +88,8 @@ public class ColorManager {
 	
 	
 	public void ToggleMode() {
-		mode = (mode == ColorMode.LIGHT) ? ColorMode.DARK : ColorMode.LIGHT;
-		boolean isLightMode = (mode == ColorMode.LIGHT);
+		mode = (mode == Mode.LIGHT) ? Mode.DARK : Mode.LIGHT;
+		boolean isLightMode = (mode == Mode.LIGHT);
 		
 		Color background = isLightMode ? LightColors.background : DarkColors.background;
 		Color button = isLightMode ? LightColors.buttonBg : DarkColors.buttonBg;
@@ -92,45 +97,34 @@ public class ColorManager {
 		Color text = isLightMode ? LightColors.text : DarkColors.text;
 		Color textFieldBg = isLightMode ? LightColors.textFieldBg : DarkColors.textFieldBg;
 		Color textAreaBg = isLightMode ? LightColors.textAreaBg : DarkColors.textAreaBg;
-
-		updateWindows(background);
-		updateButtons(button, buttonTxt);
-		updateLabels(text);
-		updateTextFields(textFieldBg, text);
-		updateTextArea(textAreaBg, text);
+		
+		
+		updateBackground(windows, background);
+		updateForeground(labels, text);
+		updateBoth(buttons, button, buttonTxt);
+		updateBoth(textFields, textFieldBg, text);
+		updateBoth(textAreas, textAreaBg, text);
 	}
 
 
-	private void updateWindows(Color background) {
-		for (JFrame window : windows) {
-			window.getContentPane().setBackground(background);
+	
+	private void updateBackground(ArrayList<JFrame> jframes, Color background) {
+		for (JFrame jframe : jframes) {
+			jframe.getContentPane().setBackground(background);
 		}
 	}
 	
-	private void updateButtons(Color background, Color text) {
-		for (JButton button : buttons) {
-			button.setBackground(background);
-			button.setForeground(text);
+	private void updateForeground(ArrayList<JComponent> components, Color foreground) {
+		for (JComponent component : components) {
+			component.setForeground(foreground);
 		}
 	}
 	
-	private void updateLabels(Color text) {
-		for (JLabel label : labels) {
-			label.setForeground(text);
-		}
-	}
 	
-	private void updateTextFields(Color background, Color text) {
-		for (JTextField textField : textFields) {
-			textField.setBackground(background);
-			textField.setForeground(text);
-		}
-	}
-	
-	private void updateTextArea(Color background, Color text) {
-		for (JTextArea textArea : textAreas) {
-			textArea.setBackground(background);
-			textArea.setForeground(text);
+	private void updateBoth(ArrayList<JComponent> components, Color background, Color foreground) {
+		for (JComponent component : components) {
+			component.setBackground(background);
+			component.setForeground(foreground);
 		}
 	}
 }
