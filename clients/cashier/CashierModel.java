@@ -6,6 +6,7 @@ import debug.DEBUG;
 import middle.*;
 
 import java.util.Observable;
+import java.util.Stack;
 
 /**
  * Implements the Model of the cashier client
@@ -17,6 +18,7 @@ public class CashierModel extends Observable
   private State       theState   = State.process;   // Current state
   private Product     theProduct = null;            // Current product
   private Basket      theBasket  = null;            // Bought items
+  private Stack<Basket> basketStack = new Stack<Basket>();
 
   private String      pn = "";                      // Product being processed
 
@@ -47,7 +49,10 @@ public class CashierModel extends Observable
    */
   public Basket getBasket()
   {
-    return theBasket;
+	if (basketStack.size() < 1)
+		return null;
+				
+    return basketStack.peek();
   }
 
   /**
@@ -112,7 +117,9 @@ public class CashierModel extends Observable
         if ( stockBought )                      // Stock bought
         {                                       // T
           makeBasketIfReq();                    //  new Basket ?
-          theBasket.add( theProduct );          //  Add to bought
+          Basket basket = basketStack.peek().makeCopy();
+          basket.add( theProduct );          //  Add to bought
+          basketStack.add(basket);
           theAction = "Purchased " +            //    details
                   theProduct.getDescription();  //
         } else {                                // F
@@ -130,30 +137,44 @@ public class CashierModel extends Observable
   }
   
   /**
+   * Undo the last press of the buy button
+   */
+  public void undoBuy() {
+	  System.out.println(basketStack);
+	  String theAction = "Undo last buy";
+	  if (basketStack.size() < 2)
+		  return;
+	  
+	  basketStack.pop();
+	  setChanged();
+	  notifyObservers(theAction);
+  }
+  /**
    * Customer pays for the contents of the basket
    */
   public void doBought()
   {
     String theAction = "";
     int    amount  = 1;                       //  & quantity
+    Basket basket = basketStack.peek();
     try
     {
-      if ( theBasket != null &&
-           theBasket.size() >= 1 )            // items > 1
+      if ( basket != null &&
+    		  basket.size() >= 1 )            // items > 1
       {                                       // T
-        theOrder.newOrder( theBasket );       //  Process order
-        theBasket = null;                     //  reset
+        theOrder.newOrder( basket );       //  Process order
+        basket = null;                     //  reset
       }                                       //
       theAction = "Start New Order";            // New order
       theState = State.process;               // All Done
-       theBasket = null;
+      basketStack = new Stack<Basket>();
     } catch( OrderException e )
     {
       DEBUG.error( "%s\n%s", 
             "CashierModel.doCancel", e.getMessage() );
       theAction = e.getMessage();
     }
-    theBasket = null;
+    basketStack = new Stack<Basket>();
     setChanged(); notifyObservers(theAction); // Notify
   }
 
@@ -171,13 +192,14 @@ public class CashierModel extends Observable
    */
   private void makeBasketIfReq()
   {
-    if ( theBasket == null )
+    if (basketStack.size() < 1)
     {
       try
       {
         int uon   = theOrder.uniqueNumber();     // Unique order num.
-        theBasket = makeBasket();                //  basket list
-        theBasket.setOrderNum( uon );            // Add an order number
+        Basket basket = new Basket();                //  basket list
+        basket.setOrderNum( uon );            // Add an order number
+        basketStack.add(basket);
       } catch ( OrderException e )
       {
         DEBUG.error( "Comms failure\n" +

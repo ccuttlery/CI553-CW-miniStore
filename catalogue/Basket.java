@@ -29,6 +29,20 @@ public class Basket extends ArrayList<Product> implements Serializable
   }
   
   /**
+   * Creates a new basket object with the same product list as this one
+   * @return the copy of this basket
+   */
+  public Basket makeCopy() {
+	  Basket copy = new Basket();
+	  
+	  for (Product product : this) {
+		  copy.add(product);
+	  }
+	  
+	  return copy;
+  }
+  
+  /**
    * Set the customers unique order number
    * Valid order Numbers 1 .. N
    * @param anOrderNum A unique order number
