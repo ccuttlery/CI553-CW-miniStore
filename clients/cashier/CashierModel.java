@@ -53,19 +53,19 @@ public class CashierModel extends Observable
   /**
    * Check if the product is in Stock
    * @param productNum The product number
+   * @param quantity How many of this product to check for
    */
-  public void doCheck(String productNum )
+  public void doCheck(String productNum, int quantity)
   {
     String theAction = "";
     theState  = State.process;                  // State process
     pn  = productNum.trim();                    // Product no.
-    int    amount  = 1;                         //  & quantity
     try
     {
-      if ( theStock.exists( pn ) )              // Stock Exists?
+      if (theStock.exists(pn))              // Stock Exists?
       {                                         // T
         Product pr = theStock.getDetails(pn);   //  Get details
-        if ( pr.getQuantity() >= amount )       //  In stock?
+        if (pr.getQuantity() >= quantity)       //  In stock?
         {                                       //  T
           theAction =                           //   Display 
             String.format( "%s : %7.2f (%2d) ", //
@@ -73,11 +73,11 @@ public class CashierModel extends Observable
               pr.getPrice(),                    //    price
               pr.getQuantity() );               //    quantity     
           theProduct = pr;                      //   Remember prod.
-          theProduct.setQuantity( amount );     //    & quantity
+          theProduct.setQuantity(quantity);     //    & quantity
           theState = State.checked;             //   OK await BUY 
         } else {                                //  F
           theAction =                           //   Not in Stock
-            pr.getDescription() +" not in stock";
+            "Less than "+quantity+" '"+pr.getDescription() +"' in stock";
         }
       } else {                                  // F Stock exists
         theAction =                             //  Unknown
@@ -98,7 +98,6 @@ public class CashierModel extends Observable
   public void doBuy()
   {
     String theAction = "";
-    int    amount  = 1;                         //  & quantity
     try
     {
       if ( theState != State.checked )          // Not checked

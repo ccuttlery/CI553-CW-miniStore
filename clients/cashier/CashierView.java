@@ -27,6 +27,7 @@ public class CashierView implements Observer
   private final JLabel      pageTitle  = new JLabel();
   private final JLabel      theAction  = new JLabel();
   private final JTextField  theInput   = new JTextField();
+  private final JTextField  theInputNo = new JTextField();
   private final JTextArea   theOutput  = new JTextArea();
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtCheck = new JButton( CHECK );
@@ -70,13 +71,13 @@ public class CashierView implements Observer
     
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
     theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
+      e -> cont.doCheck(theInput.getText(), getQuantity()));
     ColorManager.getInstance().initialiseButton(theBtCheck);
     cp.add( theBtCheck );                           //  Add to canvas
 
     theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
     theBtBuy.addActionListener(                     // Call back code
-      e -> cont.doBuy() );
+      e -> cont.doBuy());
     ColorManager.getInstance().initialiseButton(theBtBuy);
     cp.add( theBtBuy );                             //  Add to canvas
 
@@ -91,10 +92,15 @@ public class CashierView implements Observer
     ColorManager.getInstance().initialiseLabel(theAction);
     cp.add( theAction );                            //  Add to canvas
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Input Area
+    theInput.setBounds( 110, 50, 120, 40 );         // Input Area
     theInput.setText("");                           // Blank
     ColorManager.getInstance().initialiseTextField(theInput);
     cp.add( theInput );                             //  Add to canvas
+    
+    theInputNo.setBounds( 260, 50, 120, 40 );       // Input Area
+    theInputNo.setText("1");                       
+    ColorManager.getInstance().initialiseTextField(theInputNo);
+    cp.add( theInputNo );                           //  Add to canvas
 
     theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
@@ -105,6 +111,20 @@ public class CashierView implements Observer
     rootWindow.setVisible( true );                  // Make visible
     theInput.requestFocus();                        // Focus is here
   }
+  
+  /**
+   * @return the number in theInputNo textfield (if it is valid) or 1 otherwise
+   */
+  private int getQuantity() {
+	  try {
+		  return Integer.parseInt(theInputNo.getText());
+	  }
+	  catch (NumberFormatException e) {
+		  theInputNo.setText("1");
+		  return 1;
+	  }
+  }
+  
 
   /**
    * The controller object, used so that an interaction can be passed to the controller

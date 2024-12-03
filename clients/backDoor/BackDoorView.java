@@ -95,7 +95,7 @@ public class BackDoorView implements Observer
     cp.add( theInput );                             //  Add to canvas
     
     theInputNo.setBounds( 260, 50, 120, 40 );       // Input Area
-    theInputNo.setText("0");                        // 0
+    theInputNo.setText("1");                        
     ColorManager.getInstance().initialiseTextField(theInputNo);
     cp.add( theInputNo );                           //  Add to canvas
 
