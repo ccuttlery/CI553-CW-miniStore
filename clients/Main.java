@@ -12,6 +12,7 @@ import clients.customer.CustomerView;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
+import clients.data.*;
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 import style.ColorManager;
@@ -48,6 +49,7 @@ class Main
     startCashierGUI_MVC( mlf ); // you can create multiple clients
     startPackingGUI_MVC( mlf );
     startBackDoorGUI_MVC( mlf );
+    startDataGUI_MVC(mlf);
   }
   
   /**
@@ -136,5 +138,27 @@ class Main
 
     model.addObserver( view );       // Add observer to the model
     window.setVisible(true);         // Make window visible
+  }
+  
+  /**
+   * start the data manager client - add products to the database
+   * @param mlf A factory to create objects to access the stock list
+   */
+  public void startDataGUI_MVC(MiddleFactory mlf)
+  {
+	    JFrame  window = new JFrame();
+
+	    window.setTitle( "Add to Database MVC");
+	    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	    ColorManager.getInstance().initialiseWindow(window);
+	    Dimension pos = PosOnScrn.getPos();
+	    
+	    DataModel model      = new DataModel(mlf);
+	    DataView view        = new DataView( window, mlf, pos.width, pos.height );
+	    DataController cont  = new DataController( model, view );
+	    view.setController( cont );
+
+	    model.addObserver( view );       // Add observer to the model
+	    window.setVisible(true);         // Make window visible  
   }
 }
