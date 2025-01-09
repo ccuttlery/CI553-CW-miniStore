@@ -116,13 +116,23 @@ public class CashierView implements Observer
    * @return the number in theInputNo textfield (if it is valid) or 1 otherwise
    */
   private int getQuantity() {
+	  int output = 1;
+	  
 	  try {
-		  return Integer.parseInt(theInputNo.getText());
+		  output = Integer.parseInt(theInputNo.getText());
 	  }
 	  catch (NumberFormatException e) {
 		  theInputNo.setText("1");
-		  return 1;
 	  }
+	  
+	  if (output <= 0)
+	  {
+		  theInputNo.setText("1");		  
+		  output = 1;
+	  }
+	  
+	  System.out.println(output);
+	  return output;
   }
   
 
